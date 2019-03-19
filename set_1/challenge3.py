@@ -6,15 +6,15 @@ def single_byte_xor(buf, key):
 
 
 def english_score(test_str):
-    most_common_english_letters = "etaoinshrdlu"
+    english_letter_frequency_ordering = "etaoinshrdlucmfwypvbgkjqxz"
 
     chr_counts = collections.Counter(test_str).most_common()
     score = 0
     for chr_count in chr_counts:
-        index = most_common_english_letters.find(chr_count[0])
+        index = english_letter_frequency_ordering.find(chr_count[0])
         if index != -1:
             # give more weight to more common letters
-            score += (len(most_common_english_letters) - index) * chr_count[1]
+            score += (len(english_letter_frequency_ordering) - index) * chr_count[1]
 
     return score
 
