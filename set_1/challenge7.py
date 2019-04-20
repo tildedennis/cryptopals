@@ -4,7 +4,7 @@ import sys
 from Crypto.Cipher import AES
 
 
-def decrypt_aes_128_ebc(key, encbuf):
+def decrypt_aes_128_ecb(key, encbuf):
     block_size = 16
 
     if len(key) != 16:
@@ -28,7 +28,7 @@ def decrypt_aes_128_ebc(key, encbuf):
     return plainbuf
 
 
-def encrypt_aes_128_ebc(key, plainbuf):
+def encrypt_aes_128_ecb(key, plainbuf):
     block_size = 16
 
     if len(key) != 16:
@@ -61,11 +61,11 @@ if __name__ == "__main__":
     round1 = base64.b64decode(data)
 
     key = "YELLOW SUBMARINE"
-    plaintext = decrypt_aes_128_ebc(key, round1)
+    plaintext = decrypt_aes_128_ecb(key, round1)
     if plaintext:
         print plaintext
 
-    test_encbuf = encrypt_aes_128_ebc(key, plaintext)
+    test_encbuf = encrypt_aes_128_ecb(key, plaintext)
     if test_encbuf != round1:
         print "bad test encrypt"
         sys.exit(1)
