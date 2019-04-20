@@ -4,7 +4,7 @@ import sys
 from Crypto.Cipher import AES
 
 
-def aes_128_ebc(key, encbuf):
+def decrypt_aes_128_ebc(key, encbuf):
     block_size = 16
 
     if len(key) != 16:
@@ -28,6 +28,30 @@ def aes_128_ebc(key, encbuf):
     return plainbuf
 
 
+def encrypt_aes_128_ebc(key, plainbuf):
+    block_size = 16
+
+    if len(key) != 16:
+        print "key must be 16 bytes long"
+        return
+
+    encbuf = []
+    for i in range(0, len(plainbuf), block_size):
+        plain_block = plainbuf[i:i+block_size]
+
+        if len(plain_block) != block_size:
+            print "plain_block requires %d bytes of padding" % (block_size - len(plain_block))
+            return
+
+        aes = AES.new(key)
+        enc_block = aes.encrypt(plain_block)
+        encbuf.append(enc_block)
+
+    encbuf = "".join(encbuf)
+
+    return encbuf
+
+
 if __name__ == "__main__":
     fp = open("7.txt", "rb")
     data = fp.read()
@@ -37,6 +61,11 @@ if __name__ == "__main__":
     round1 = base64.b64decode(data)
 
     key = "YELLOW SUBMARINE"
-    plaintext = aes_128_ebc(key, round1)
+    plaintext = decrypt_aes_128_ebc(key, round1)
     if plaintext:
         print plaintext
+
+    test_encbuf = encrypt_aes_128_ebc(key, plaintext)
+    if test_encbuf != round1:
+        print "bad test encrypt"
+        sys.exit(1)
