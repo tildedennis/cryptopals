@@ -6,11 +6,13 @@ def pkcs7_pad(block_size, block):
     if len(block) % block_size == 0:
         return block
 
-    num_padding_bytes = block_size - len(block)
+    complete_blocks = len(block) / block_size
+    padded_size = (complete_blocks + 1) * block_size
+    num_padding_bytes = padded_size - len(block)
     pad_byte = struct.pack("B", num_padding_bytes)
 
     padded_block = block + (pad_byte*num_padding_bytes)
-    if len(padded_block) != block_size:
+    if len(padded_block) % block_size != 0:
         print "bad padding added"
         return block
 
@@ -59,4 +61,10 @@ if __name__ == "__main__":
     print "%s (%d bytes)" % (unpadded_block2, len(unpadded_block2))
     if unpadded_block2 != block2:
         print "bad unpadding"
+        sys.exit(1)
+
+    block = "A"*34
+    padded_block = pkcs7_pad(16, block)
+    if padded_block != "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\x0e\x0e\x0e\x0e\x0e\x0e\x0e\x0e\x0e\x0e\x0e\x0e\x0e\x0e":
+        print "bad padding"
         sys.exit(1)
