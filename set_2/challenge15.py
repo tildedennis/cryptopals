@@ -1,8 +1,5 @@
 def pkcs7_unpad(padded_buf):
     possible_pad_byte = padded_buf[-1]
-    if ord(possible_pad_byte) >= len(padded_buf):
-        raise Exception("pad byte is too large")
-
     pad_bytes = possible_pad_byte*ord(possible_pad_byte)
     if padded_buf[-ord(possible_pad_byte):] != pad_bytes:
         raise Exception("bad pad bytes")

@@ -3,8 +3,11 @@ import sys
 
 
 def pkcs7_pad(block_size, buf):
+    # if multiple of block size, add block size padding so that we know the last byte is padding
     if len(buf) % block_size == 0:
-        return buf
+        pad_byte = struct.pack("B", block_size)
+        padded_buf = buf + (pad_byte*block_size)
+        return padded_buf
 
     complete_blocks = len(buf) / block_size
     padded_size = (complete_blocks + 1) * block_size
@@ -25,9 +28,6 @@ def pkcs7_unpad(block_size, padded_buf):
         return padded_buf
 
     possible_pad_byte = padded_buf[-1]
-    if ord(possible_pad_byte) >= len(padded_buf):
-        return padded_buf
-
     pad_bytes = possible_pad_byte*ord(possible_pad_byte)
     if padded_buf[-ord(possible_pad_byte):] != pad_bytes:
         return padded_buf
