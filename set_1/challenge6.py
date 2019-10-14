@@ -97,7 +97,7 @@ def get_probable_key(data, key_size_start, key_size_stop):
         probable_key.append(chr(single_byte_key))
 
     probable_key = "".join(probable_key)
-    print "probable key: %s" % probable_key
+    print "probable key: %s" % repr(probable_key)
 
     return probable_key
 
