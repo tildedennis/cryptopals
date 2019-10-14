@@ -33,9 +33,9 @@ def hamming_distance(str1, str2):
     return distance
 
 
-def get_probable_key_size(data):
+def get_probable_key_size(data, key_size_start, key_size_stop):
     distances = []
-    for key_size in range(2, 41):
+    for key_size in range(key_size_start, key_size_stop):
         chunk1 = data[0:key_size]
         chunk2 = data[key_size:(2*key_size)]
         chunk3 = data[(2*key_size):(3*key_size)]
@@ -62,7 +62,7 @@ def get_probable_key_size(data):
 
 
 def get_probable_key(data):
-    key_size = get_probable_key_size(data)
+    key_size = get_probable_key_size(data, 2, 41)
 
     blocks = []
     for offset in range(0, len(data), key_size):
