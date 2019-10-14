@@ -61,8 +61,8 @@ def get_probable_key_size(data, key_size_start, key_size_stop):
     return probable_key_size
 
 
-def get_probable_key(data):
-    key_size = get_probable_key_size(data, 2, 41)
+def get_probable_key(data, key_size_start, key_size_stop):
+    key_size = get_probable_key_size(data, key_size_start, key_size_stop)
 
     blocks = []
     for offset in range(0, len(data), key_size):
@@ -116,7 +116,7 @@ if __name__ == "__main__":
     data = data.strip("\n")
     round1 = base64.b64decode(data)
 
-    key = get_probable_key(round1)
+    key = get_probable_key(round1, 2, 41)
 
     print
     print challenge5.repeating_xor(round1, key)
